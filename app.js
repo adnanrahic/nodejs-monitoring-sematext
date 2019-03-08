@@ -23,16 +23,16 @@ app.use(morgan(format, {
       logger.info('HTTP LOG', {
         method: data.method,
         url: data.url,
-        status: data.status,
-        responseTime: data['response-time'],
-        contentLength: data.res
+        status: parseInt(data.status, 10),
+        responseTime: parseInt(data['response-time'], 10),
+        contentLength: parseInt(data.res, 10)
       })
     }
   }
 }))
 
 app.get('/api', (req, res, next) => {
-  logger.info('info', 'Api Works.')
+  logger.info('Api Works.')
   res.status(200).send('Api Works.')
 })
 
@@ -50,6 +50,7 @@ app.get('/api/error', (req, res, next) => {
   try {
     throw new Error('Something broke...')
   } catch (error) {
+    logger.error(error)
     res.status(500).send(error)
   }
 })
