@@ -24,7 +24,7 @@ app.use(morgan(format, {
         method: data.method,
         url: data.url,
         status: parseInt(data.status, 10),
-        responseTime: parseInt(data['response-time'], 10),
+        responseTime: parseFloat(data['response-time'], 10).toFixed(2),
         contentLength: parseInt(data.res, 10)
       })
     }
