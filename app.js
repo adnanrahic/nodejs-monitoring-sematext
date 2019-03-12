@@ -5,7 +5,13 @@ const app = express()
 const winston = require('winston')
 const morgan = require('morgan')
 const json = require('morgan-json')
-const format = json(':method :url :status :res[content-length] :response-time')
+const format = json({
+  method: ':method',
+  url: ':url',
+  status: ':status',
+  contentLength: ':res[content-length]',
+  responseTime: ':response-time'
+})
 const Logsene = require('winston-logsene')
 const logger = winston.createLogger({
   transports: [new Logsene({
@@ -15,19 +21,9 @@ const logger = winston.createLogger({
     url: 'https://logsene-receiver.sematext.com/_bulk'
   })]
 })
-
 app.use(morgan(format, {
   stream: {
-    write: (message) => {
-      const data = JSON.parse(message)
-      logger.info('HTTP LOG', {
-        method: data.method,
-        url: data.url,
-        status: parseInt(data.status, 10),
-        responseTime: parseFloat(data['response-time'], 10).toFixed(2),
-        contentLength: parseInt(data.res, 10)
-      })
-    }
+    write: (message) => logger.info('HTTP LOG', JSON.parse(message))
   }
 }))
 
