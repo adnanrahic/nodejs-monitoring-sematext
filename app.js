@@ -21,11 +21,12 @@ const logger = winston.createLogger({
     url: 'https://logsene-receiver.sematext.com/_bulk'
   })]
 })
-app.use(morgan(format, {
+const httpLogger = morgan(format, {
   stream: {
     write: (message) => logger.info('HTTP LOG', JSON.parse(message))
   }
-}))
+})
+app.use(httpLogger)
 
 app.get('/api', (req, res, next) => {
   logger.info('Api Works.')
