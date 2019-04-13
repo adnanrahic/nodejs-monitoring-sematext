@@ -23,7 +23,18 @@ const logger = winston.createLogger({
 })
 const httpLogger = morgan(format, {
   stream: {
-    write: (message) => logger.info('HTTP LOG', JSON.parse(message))
+    write: (message) => {
+      const m = JSON.parse(message)
+      const pm = {
+        method: m.method,
+        url: m.url,
+        status: Number(m.status),
+        contentLength: m.contentLength,
+        responseTime: Number(m.responseTime)
+      }
+      console.log(pm)
+      logger.info('HTTP LOG', pm)
+    }
   }
 })
 app.use(httpLogger)
