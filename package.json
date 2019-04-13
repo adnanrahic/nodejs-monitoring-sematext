@@ -4,7 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "node app.js"
+    "start": "node cluster.js",
+    "cluster": "node cluster.js",
+    "server": "node server.js"
   },
   "keywords": [],
   "author": "",
