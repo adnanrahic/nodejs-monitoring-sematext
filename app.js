@@ -32,7 +32,6 @@ const httpLogger = morgan(format, {
         contentLength: m.contentLength,
         responseTime: Number(m.responseTime)
       }
-      console.log(pm)
       logger.info('HTTP LOG', pm)
     }
   }
