@@ -1,5 +1,6 @@
 const cluster = require('cluster')
 const numCPUs = require('os').cpus().length
+const app = require('./app')
 
 if (cluster.isMaster) {
   masterProcess()
@@ -26,5 +27,5 @@ function masterProcess () {
 function childProcess () {
   console.log(`Worker ${process.pid} started...`)
 
-  require('./server')
+  app.listen(3000, () => console.log('Server is running on port 3000'))  
 }
