@@ -1,5 +1,5 @@
 require('dotenv').config()
-require('spm-agent-nodejs')
+// require('spm-agent-nodejs')
 const express = require('express')
 const app = express()
 const winston = require('winston')
@@ -32,6 +32,7 @@ const httpLogger = morgan(format, {
         contentLength: m.contentLength,
         responseTime: Number(m.responseTime)
       }
+      console.log(process.env)
       logger.info('HTTP LOG', pm)
     }
   }

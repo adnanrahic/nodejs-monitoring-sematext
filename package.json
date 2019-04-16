@@ -6,7 +6,8 @@
   "scripts": {
     "start": "node cluster.js",
     "cluster": "node cluster.js",
-    "server": "node server.js"
+    "server": "node server.js",
+    "cluster-spm": "SPM_TOKEN=spm_token node -r /usr/lib/node_modules/spm-agent-nodejs cluster.js"
   },
   "keywords": [],
   "author": "",
