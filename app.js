@@ -1,46 +1,31 @@
 require('dotenv').config()
-require('spm-agent-nodejs')
+require ('spm-agent-nodejs')
+const tracer = require('dd-trace').init()
 const express = require('express')
 const app = express()
-const winston = require('winston')
-const morgan = require('morgan')
-const json = require('morgan-json')
-const format = json({
-  method: ':method',
-  url: ':url',
-  status: ':status',
-  contentLength: ':res[content-length]',
-  responseTime: ':response-time'
-})
-const Logsene = require('winston-logsene')
+
+const StatsD = require('node-dogstatsd').StatsD;
+const dogstatsd = new StatsD();
+
+const opentracing = require('opentracing')
+opentracing.initGlobalTracer(tracer)
+
+const winston = require('winston');
+const LogzioWinstonTransport = require('winston-logzio');
+const logzioWinstonTransport = new LogzioWinstonTransport({
+  level: 'info',
+  name: 'winston_logzio',
+  token: 'ZVWKrnJWjmxMORRJrRVkLUJfLQqJeYHP',
+  host: 'listener.logz.io',
+});
 const logger = winston.createLogger({
-  transports: [new Logsene({
-    token: process.env.LOGS_TOKEN,
-    level: 'info',
-    type: 'api_logs',
-    url: 'https://logsene-receiver.sematext.com/_bulk'
-  })]
-})
-const httpLogger = morgan(format, {
-  stream: {
-    write: (message) => {
-      const m = JSON.parse(message)
-      const pm = {
-        method: m.method,
-        url: m.url,
-        status: Number(m.status),
-        contentLength: m.contentLength,
-        responseTime: Number(m.responseTime)
-      }
-      console.log(pm)
-      logger.info('HTTP LOG', pm)
-    }
-  }
-})
-app.use(httpLogger)
+    transports: [logzioWinstonTransport]
+});
 
 app.get('/api', (req, res, next) => {
-  logger.info('Api Works.')
+  // console.log('Api Works.')
+  logger.log('warn', 'Just a test message', new Error('Big problem'));
+  dogstatsd.increment('page.views')
   res.status(200).send('Api Works.')
 })
 
@@ -58,9 +43,10 @@ app.get('/api/error', (req, res, next) => {
   try {
     throw new Error('Something broke...')
   } catch (error) {
-    logger.error(error)
+    console.error(error)
     res.status(500).send(error)
   }
 })
 
-app.listen(3000, () => console.log('Server is running on port 3000'))
+module.exports = app
+
