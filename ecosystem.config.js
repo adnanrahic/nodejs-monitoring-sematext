@@ -5,16 +5,19 @@ module.exports = {
     instances: 0, // add as many as your CPU has cores
     autorestart: true,
     watch: false,
+    exec_mode: 'fork', // does not work in 'cluster'
     interpreter_args: '-r /usr/lib/node_modules/spm-agent-nodejs', // ADD THIS
     env: { // ADD ALL OF THIS TOO
       SPM_TOKEN: 'spm_token',
+      SPM_MASTER_MODE: 1,
       spmagent_dbDir: './spmdb',
       spmagent_logger__dir: './spmlogs',
       spmagent_logger__silent: false,
       spmagent_logger__level: 'error'
     },
     env_production: {
-      SPM_TOKEN: 'spmtplen',
+      SPM_TOKEN: 'spm_token',
+      SPM_MASTER_MODE: 1,
       spmagent_dbDir: './spmdb',
       spmagent_logger__dir: './spmlogs',
       spmagent_logger__silent: false,
