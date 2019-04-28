@@ -1,5 +1,5 @@
 module.exports = {
-  apps : [{
+  apps: [{
     name: 'API',
     script: 'server.js', // replace with your entry file
     instances: 0, // add as many as your CPU has cores
@@ -24,6 +24,6 @@ module.exports = {
       spmagent_logger__level: 'error'
     }
   }]
-};
+}
 
 // [gc-stats] Success: "/usr/lib/node_modules/spm-agent-nodejs/node_modules/gc-stats/build/gcstats/v1.2.1/Release/node-v57-linux-x64/gcstats.node" is installed via remote
