@@ -1,3 +1,5 @@
 node_modules
 spm*
 .env
+.clinic
+**/*.log
