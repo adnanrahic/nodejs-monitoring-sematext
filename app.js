@@ -1,5 +1,6 @@
 require('dotenv').config()
 // require('spm-agent-nodejs')
+require('appmetrics-dash').attach()
 const express = require('express')
 const app = express()
 const winston = require('winston')
@@ -40,16 +41,16 @@ const httpLogger = morgan(format, {
 app.use(httpLogger)
 
 // Express Status Monitor
-// app.use(require('express-status-monitor')())
+app.use(require('express-status-monitor')())
 
 // Prometheus
-// const client = require('prom-client')
-// const collectDefaultMetrics = client.collectDefaultMetrics
-// collectDefaultMetrics({ timeout: 1000 })
-// app.get('/metrics', (req, res) => {
-//   res.set('Content-Type', client.register.contentType)
-//   res.end(client.register.metrics())
-// })
+const client = require('prom-client')
+const collectDefaultMetrics = client.collectDefaultMetrics
+collectDefaultMetrics({ timeout: 1000 })
+app.get('/metrics', (req, res) => {
+  res.set('Content-Type', client.register.contentType)
+  res.end(client.register.metrics())
+})
 
 app.get('/api', (req, res, next) => {
   logger.info('Api Works.')

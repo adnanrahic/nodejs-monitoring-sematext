@@ -1,5 +1,4 @@
 const cluster = require('cluster')
-const numCPUs = require('os').cpus().length
 const app = require('./app')
 
 if (cluster.isMaster) {
@@ -11,10 +10,8 @@ if (cluster.isMaster) {
 function masterProcess () {
   console.log(`Master ${process.pid} is running`)
 
-  for (let i = 0; i < numCPUs; i++) {
-    console.log(`Forking process number ${i}...`)
-    cluster.fork()
-  }
+  console.log(`Forking process...`)
+  cluster.fork()
 
   cluster.on('exit', (worker) => {
     console.log(`Worker ${worker.process.pid} died`)

@@ -15,12 +15,16 @@ pm2 monit
 
 - https://github.com/RafalWilinski/express-status-monitor
 
-```
+```bash
 npm i express-status-monitor
+```
 
+```javascript
 // add the middleware before all routes
 app.use(require('express-status-monitor')())
+```
 
+```bash
 // run the app
 node server.js
 
@@ -37,21 +41,17 @@ npm i appmetrics-dash
 ```
 
 ```javascript
-// server.js
-const dash = require('appmetrics-dash')
-const http = require('http')
-const app = require('./app')
-const server = http.createServer(app)
-server.listen(3000, () => console.log('Server is running on port 3000'))
-dash.monitor({server: server})
+// app.js
+// at the top before all other require statements
+require('appmetrics-dash').attach()
 ```
 
-```
+```bash
 // run the app
 node server.js
 
 // check metrics
-path: '/appmetrics-dash/'
+path: '/appmetrics-dash'
 ```
 
 ### Prometheus
