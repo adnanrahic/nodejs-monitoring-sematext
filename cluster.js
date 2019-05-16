@@ -13,8 +13,10 @@ function masterProcess () {
 
   for (let i = 0; i < numCPUs; i++) {
     console.log(`Forking process number ${i}...`)
-    cluster.fork()
+    const worker = cluster.fork()
+    console.log('Worker: ', worker)
   }
+  console.log('Cluster Settings: ', cluster.settings)
 
   cluster.on('exit', (worker) => {
     console.log(`Worker ${worker.process.pid} died`)
